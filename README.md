@@ -17,7 +17,8 @@ Drag the .unitypackage from releases into your Unity project and import everythi
 - Go to the water gameobject in your scene, and add a new trigger collider, putting it on your new water layer
 - Hit play and splash around!
 
-### Third party assets used
+## Third party assets used
 
 - [16 splashes.wav - soundslikewillem, Freesound.org](https://freesound.org/people/soundslikewillem/sounds/343748/)
 - [Foley_Natural_Water_Jump_Mono.wav - Nox_Sound, Freesound.org](https://freesound.org/people/Nox_Sound/sounds/585744/)
+- [Ambiance_Underwater_Stereo.wav - psiboy123, Freesound.org](https://freesound.org/people/psiboy123/sounds/448460/)
