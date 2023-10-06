@@ -14,7 +14,9 @@ Drag the .unitypackage from releases into your Unity project and import everythi
 
 - Drag the prefab from Cekay/WaterInteractions/Prefabs into your scene
 - Create a new layer for your water interactions, and specify that in the prefab's menu
-- Go to the water gameobject in your scene, and add a new trigger collider, putting it on your new water layer
+-- By default, the script looks for layer 22. You can change this in the WaterInteractionPlayer gameobject.
+- Go to the gameobject you'd like to define as your interactable water, and add a new trigger collider
+-- Set the collider's layer to the new water layer you just created, and resize it to cover the water's surface
 - Hit play and splash around!
 
 ## Third party assets used
