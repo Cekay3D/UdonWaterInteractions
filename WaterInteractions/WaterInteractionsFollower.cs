@@ -1,69 +1,65 @@
-﻿
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
-using VRC.SDKBase;
-using VRC.Udon;
 
 namespace Cekay.WaterInteractions
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class WaterInteractionsFollower : UdonSharpBehaviour
     {
-        private VRCPlayerApi _localPlayer;
+        [SerializeField] private WaterInteractionsPlayer WaterIntPlayer;
 
-        [SerializeField] WaterInteractionsPlayer WaterIntPlayer;
-
-        [SerializeField] ParticleSystem SplashParticles;
-        [SerializeField] AudioSource SplashAudio;
-
-        private string FollowerType;
-
-        void Start()
-        {
-
-        }
-
-        public void SetFollowerType(string DesiredFollwerType)
-        {
-            FollowerType = DesiredFollwerType;
-        }
+        [SerializeField] private ParticleSystem SplashParticles;
+        [SerializeField] private AudioSource SplashAudio;
+        [SerializeField] private GameObject UnderwaterAudio;
+        public string FollowerType;
 
         private void OnTriggerEnter(Collider other)
         {
-            SplashType(other, "enter");
+            if (other.gameObject.layer == WaterIntPlayer.InteractableLayer)
+            {
+                SplashType("Enter");
+                if (FollowerType == "Head")
+                {
+                    UnderwaterAudio.SetActive(true);
+                }
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            SplashType(other, "exit");
-        }
-
-        private void SplashType(Collider other, string type)
-        {
             if (other.gameObject.layer == WaterIntPlayer.InteractableLayer)
             {
-                if (FollowerType == "Origin")
+                SplashType("Exit");
+                if (FollowerType == "Head")
                 {
-                    if (type == "enter" && _localPlayer.GetVelocity().magnitude > WaterIntPlayer.BigSplashVelocity)
-                    {
-                        SplashBig();
-                    }
-                    else if (type == "exit")
-                    {
-                        SplashExit();
-                    }
-                    else
-                    {
-                        SplashSmall();
-                    }
+                    UnderwaterAudio.SetActive(false);
+                }
+            }
+        }
+
+        private void SplashType(string type)
+        {
+            if (FollowerType == "Origin")
+            {
+                if (type == "Enter" && WaterIntPlayer.LocalPlayerApi.GetVelocity().magnitude > WaterIntPlayer.BigSplashVelocity)
+                {
+                    SplashBig();
+                }
+                else if (type == "Exit")
+                {
+                    SplashExit();
                 }
                 else
                 {
                     SplashSmall();
                 }
-
-                SplashParticles.Play();
             }
+            else
+            {
+                SplashSmall();
+            }
+
+            SplashParticles.Play();
         }
 
         private void SplashSmall()

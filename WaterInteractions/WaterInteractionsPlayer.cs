@@ -1,23 +1,16 @@
-﻿
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
 
 namespace Cekay.WaterInteractions
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class WaterInteractionsPlayer : UdonSharpBehaviour
     {
-        //[SerializeField] GameObject LeftHandFollower;
-        //[SerializeField] GameObject RightHandFollower;
-        //[SerializeField] GameObject HeadFollower;
-        //[SerializeField] GameObject OriginFollower;
-        
-        [SerializeField] WaterInteractionsFollower LeftHandFollower;
-        [SerializeField] WaterInteractionsFollower RightHandFollower;
-        [SerializeField] WaterInteractionsFollower HeadFollower;
-        [SerializeField] WaterInteractionsFollower OriginFollower;
+        [SerializeField] private WaterInteractionsFollower HeadFollower;
+        [SerializeField] private WaterInteractionsFollower LeftHandFollower;
+        [SerializeField] private WaterInteractionsFollower RightHandFollower;
+        [SerializeField] private WaterInteractionsFollower OriginFollower;
 
         public int InteractableLayer = 22;
         public int BigSplashVelocity = 6;
@@ -25,24 +18,25 @@ namespace Cekay.WaterInteractions
         public AudioClip[] SmallSplashes;
         public AudioClip[] BigSplashes;
         public AudioClip[] ExitSplashes;
+        public AudioClip[] Underwater;
 
-        private VRCPlayerApi _localPlayer;
+        public VRCPlayerApi LocalPlayerApi;
 
-        void Start()
+        private void Start()
         {
-            _localPlayer = Networking.LocalPlayer;
+            LocalPlayerApi = Networking.LocalPlayer;
         }
 
         private void Update()
         {
-            LeftHandFollower.transform.SetPositionAndRotation(_localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.LeftHand).position,
-                                                              _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.LeftHand).rotation);
-            RightHandFollower.transform.SetPositionAndRotation(_localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.RightHand).position,
-                                                               _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.RightHand).rotation);
-            HeadFollower.transform.SetPositionAndRotation(_localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position,
-                                                          _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).rotation);
-            OriginFollower.transform.SetPositionAndRotation(_localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Origin).position,
-                                                            _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Origin).rotation);
+            HeadFollower.transform.SetPositionAndRotation(LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position,
+                                                          LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).rotation);
+            LeftHandFollower.transform.SetPositionAndRotation(LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.LeftHand).position,
+                                                              LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.LeftHand).rotation);
+            RightHandFollower.transform.SetPositionAndRotation(LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.RightHand).position,
+                                                               LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.RightHand).rotation);
+            OriginFollower.transform.SetPositionAndRotation(LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.Origin).position,
+                                                            LocalPlayerApi.GetTrackingData(VRCPlayerApi.TrackingDataType.Origin).rotation);
         }
     }
 }
